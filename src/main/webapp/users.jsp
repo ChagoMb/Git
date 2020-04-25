@@ -48,17 +48,13 @@ List of users
             <td>${user.getAcc()}</td>
             <td>
                 <form action="updateUser.jsp" method="post">
-                    <input type="hidden" name="name" value="${user.getName()}">
-                    <input type="hidden" name="email" value="${user.getMail()}">
-                    <input type="hidden" name="acc" value="${user.getAcc()}">
+                    <input type="hidden" name="id" value="${user.getId()}">
                     <input type="submit" value="Edit">
                 </form>
             </td>
             <td>
                 <form action="deleteUser.jsp" method="post">
-                    <input type="hidden" name="name" value="${user.getName()}">
-                    <input type="hidden" name="email" value="${user.getMail()}">
-                    <input type="hidden" name="acc" value="${user.getAcc()}">
+                    <input type="hidden" name="id" value="${user.getId()}">
                     <input type="submit" value="Delete">
                 </form>
             </td>

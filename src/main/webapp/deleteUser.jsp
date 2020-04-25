@@ -12,13 +12,11 @@
 </head>
 <body>
 
-Delete user: "${param.email}" ?
+Delete this user?
 <br>
 
 <form action="/delete" method="post">
-    <input type="hidden" name="name" value="${param.name}">
-    <input type="hidden" name="email" value="${param.email}">
-    <input type="hidden" name="acc" value="${param.acc}">
+    <input type="hidden" name="id" value="${param.id}">
     <input type="submit" value="Delete">
 </form>
 </body>

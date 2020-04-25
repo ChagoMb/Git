@@ -1,6 +1,6 @@
 package servlet;
 
-import service.UserService;
+import service.UserServiceHibernate;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,11 +12,9 @@ import java.io.IOException;
 @WebServlet("/delete")
 public class DeleteServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String name = req.getParameter("name");
-        String email = req.getParameter("email");
-        long acc = Long.parseLong(req.getParameter("acc"));
+        long id = Long.parseLong(req.getParameter("id"));
 
-        UserService.getInstance().deleteUser(name, email, acc);
+        UserServiceHibernate.getInstanceHibernate().deleteUser(id);
         resp.sendRedirect("/users");
     }
 }

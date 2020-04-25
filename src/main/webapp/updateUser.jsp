@@ -12,12 +12,10 @@
 </head>
 <body>
 
-Edit user:
+Edit user?
 <br>
 <form action="/update" method="post">
-    <input type="hidden" name="name" value="${param.name}">
-    <input type="hidden" name="email" value="${param.email}">
-    <input type="hidden" name="acc" value="${param.acc}">
+    <input type="hidden" name="id" value="${param.id}">
     <input type="text" name="upName" placeholder="Edit name">
     <input type="text" name="upMail" placeholder="Edit e-mail">
     <input type="text" name="upAcc" placeholder="Edit account">
