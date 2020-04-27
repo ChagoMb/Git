@@ -2,14 +2,13 @@ package service;
 
 import dao.UserJdbcDAO;
 import model.User;
+import myinterface.UserDAO;
+import util.DBHelper;
 
-import java.sql.Connection;
-import java.sql.Driver;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
-public class UserServiceJdbc {
+public class UserServiceJdbc implements UserDAO {
     private static UserServiceJdbc instance;
 
     private UserServiceJdbc() {
@@ -22,32 +21,8 @@ public class UserServiceJdbc {
         return instance;
     }
 
-    private static Connection getMySQLConnection() {
-        try {
-            DriverManager.registerDriver((Driver) Class.forName("com.mysql.jdbc.Driver").newInstance());
-
-            StringBuilder url = new StringBuilder();
-
-            url.
-                    append("jdbc:mysql://").
-                    append("localhost:3306/").
-                    append("db_preproject1?").
-                    append("user=root1&password=root").
-                    append("&serverTimezone=UTC");
-
-            return DriverManager.getConnection(url.toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new IllegalStateException();
-        }
-    }
-
-    private UserJdbcDAO getUserDAO() {
-        return new UserJdbcDAO(getMySQLConnection());
-    }
-
     public void addUser(User user) {
-        UserJdbcDAO dao = getUserDAO();
+        UserJdbcDAO dao = DBHelper.getConnection();
         try {
             dao.addUser(user);
         } catch (SQLException e) {
@@ -56,7 +31,7 @@ public class UserServiceJdbc {
     }
 
     public List<User> getAllUsers() {
-        UserJdbcDAO dao = getUserDAO();
+        UserJdbcDAO dao = DBHelper.getConnection();
         try {
             return dao.getAllUsers();
         } catch (SQLException e) {
@@ -66,7 +41,7 @@ public class UserServiceJdbc {
     }
 
     public void deleteUser(long id) {
-        UserJdbcDAO dao = getUserDAO();
+        UserJdbcDAO dao = DBHelper.getConnection();
         try {
             dao.deleteUser(id);
         } catch (SQLException e) {
@@ -74,8 +49,8 @@ public class UserServiceJdbc {
         }
     }
 
-    public void updateUser(Long id, String name, String email, long acc) {
-        UserJdbcDAO dao = getUserDAO();
+    public void updateUser(long id, String name, String email, long acc) {
+        UserJdbcDAO dao = DBHelper.getConnection();
         try {
             dao.updateUser(id, name, email, acc);
         } catch (SQLException e) {

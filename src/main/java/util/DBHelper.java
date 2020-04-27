@@ -1,5 +1,6 @@
 package util;
 
+import dao.UserJdbcDAO;
 import model.User;
 
 import org.hibernate.SessionFactory;
@@ -7,15 +8,28 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
+import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
+
 public class DBHelper {
 
     private static SessionFactory sessionFactory;
+
+    private static UserJdbcDAO connection;
 
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
             sessionFactory = createSessionFactory();
         }
         return sessionFactory;
+    }
+
+    public static UserJdbcDAO getConnection() {
+        if (connection == null) {
+            connection = getUserDAO();
+        }
+        return connection;
     }
 
     @SuppressWarnings("UnusedDeclaration")
@@ -39,5 +53,29 @@ public class DBHelper {
         builder.applySettings(configuration.getProperties());
         ServiceRegistry serviceRegistry = builder.build();
         return configuration.buildSessionFactory(serviceRegistry);
+    }
+
+    private static Connection getMySQLConnection() {
+        try {
+            DriverManager.registerDriver((Driver) Class.forName("com.mysql.jdbc.Driver").newInstance());
+
+            StringBuilder url = new StringBuilder();
+
+            url.
+                    append("jdbc:mysql://").
+                    append("localhost:3306/").
+                    append("db_preproject1?").
+                    append("user=root1&password=root").
+                    append("&serverTimezone=UTC");
+
+            return DriverManager.getConnection(url.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IllegalStateException();
+        }
+    }
+
+    private static UserJdbcDAO getUserDAO() {
+        return new UserJdbcDAO(getMySQLConnection());
     }
 }

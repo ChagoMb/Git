@@ -2,12 +2,14 @@ package service;
 
 import dao.UserHibernateDAO;
 import model.User;
+import myinterface.UserDAO;
 import org.hibernate.SessionFactory;
 import util.DBHelper;
 
+import java.sql.SQLException;
 import java.util.List;
 
-public class UserServiceHibernate {
+public class UserServiceHibernate implements UserDAO {
 
     private SessionFactory sessionFactory;
 
@@ -31,7 +33,7 @@ public class UserServiceHibernate {
     public void addUser(User user) {
         try {
             new UserHibernateDAO(sessionFactory.openSession()).addUser(user);
-        } catch(Exception e) {
+        } catch(SQLException e) {
             e.printStackTrace();
         }
     }

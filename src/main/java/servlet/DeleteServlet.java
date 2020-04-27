@@ -1,5 +1,7 @@
 package servlet;
 
+import myinterface.UserDaoFactory;
+import service.Service;
 import service.UserServiceHibernate;
 
 import javax.servlet.ServletException;
@@ -12,9 +14,14 @@ import java.io.IOException;
 @WebServlet("/delete")
 public class DeleteServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        long id = Long.parseLong(req.getParameter("id"));
+        try {
+            long id = Long.parseLong(req.getParameter("id"));
 
-        UserServiceHibernate.getInstanceHibernate().deleteUser(id);
-        resp.sendRedirect("/users");
+            UserDaoFactory daoFactory = Service.getInstance().getFactoryByProperties();
+            daoFactory.createService().deleteUser(id);
+            resp.sendRedirect("/users");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
