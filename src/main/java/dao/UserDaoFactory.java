@@ -1,26 +1,27 @@
-package service;
+package dao;
 
-import dao.UserDaoFactoryHibernate;
-import dao.UserDaoFactoryJdbc;
-import myinterface.UserDaoFactory;
+import myinterface.UserDAO;
+import service.UserServiceHibernate;
+import service.UserServiceJdbc;
 
 import java.io.FileReader;
 import java.util.Properties;
 
-public class Service {
+public class UserDaoFactory {
 
-    private static Service instance;
+    private static UserDaoFactory instance;
 
-    private Service() {}
+    private UserDaoFactory() {
+    }
 
-    public static Service getInstance() {
+    public static UserDaoFactory getInstance() {
         if (instance == null) {
-            instance = new Service();
+            instance = new UserDaoFactory();
         }
         return instance;
     }
 
-    public UserDaoFactory getFactoryByProperties() {
+    public UserDAO getFactoryByProperties() {
         Properties property = new Properties();
         FileReader reader;
         try {
@@ -30,9 +31,9 @@ public class Service {
             String type = property.getProperty("daotype");
 
             if (type.equalsIgnoreCase("hibernate")) {
-                return new UserDaoFactoryHibernate();
+                return UserServiceHibernate.getInstanceHibernate();
             } else if (type.equalsIgnoreCase("jdbc")) {
-                return new UserDaoFactoryJdbc();
+                return UserServiceJdbc.getInstanceJdbc();
             }
             else {
                 throw new RuntimeException("Unknown property key");
