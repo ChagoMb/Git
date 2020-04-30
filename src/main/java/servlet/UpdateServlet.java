@@ -1,31 +1,29 @@
 package servlet;
 
-import myinterface.UserDaoFactory;
-import service.Service;
-import service.UserServiceHibernate;
-import service.UserServiceJdbc;
+        import dao.UserDaoFactory;
+        import myinterface.UserDAO;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+        import javax.servlet.annotation.WebServlet;
+        import javax.servlet.http.HttpServlet;
+        import javax.servlet.http.HttpServletRequest;
+        import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/update")
 public class UpdateServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         try {
             req.setCharacterEncoding("UTF-8");
             long id = Long.parseLong(req.getParameter("id"));
-            String upName = req.getParameter("upName");
-            String upMail = req.getParameter("upMail");
-            long upAcc = Long.parseLong(req.getParameter("upAcc"));
+            String name = req.getParameter("upName");
+            String email = req.getParameter("upMail");
+            String password = req.getParameter("upPass");
+            long acc = Long.parseLong(req.getParameter("upAcc"));
+            String role = req.getParameter("upRole");
 
-            UserDaoFactory daoFactory = Service.getInstance().getFactoryByProperties();
-            daoFactory.createService().updateUser(id, upName, upMail, upAcc);
-            resp.sendRedirect("/users");
-        } catch(Exception e) {
+            UserDAO daoFactory = UserDaoFactory.getInstance().getFactoryByProperties();
+            daoFactory.updateUser(id, name, email, password, acc, role);
+            resp.sendRedirect("/admin");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

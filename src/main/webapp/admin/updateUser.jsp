@@ -18,7 +18,9 @@ Edit user?
     <input type="hidden" name="id" value="${param.id}">
     <input type="text" name="upName" placeholder="Edit name">
     <input type="text" name="upMail" placeholder="Edit e-mail">
+    <input type="text" name="upPass" placeholder="Edit password">
     <input type="text" name="upAcc" placeholder="Edit account">
+    <input type="text" name="upRole" placeholder="Edit role">
     <input type="submit" value="Edit">
 </form>
 </body>

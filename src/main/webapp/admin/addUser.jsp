@@ -11,10 +11,12 @@
     <title>Add new user</title>
 </head>
 <body>
-<form action="users" method="post">
+<form action="/add" method="post">
     <input required type="text" name="name" placeholder="Name">
     <input required type="text" name="email" placeholder="e-mail">
+    <input required type="text" name="password" placeholder="Password">
     <input required type="text" name="acc" placeholder="Acc">
+    <input required type="text" name="role" placeholder="Role">
     <input type="submit" value="Save">
 </form>
 </body>

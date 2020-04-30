@@ -6,7 +6,6 @@ import myinterface.UserDAO;
 import org.hibernate.SessionFactory;
 import util.DBHelper;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public class UserServiceHibernate implements UserDAO {
@@ -33,7 +32,7 @@ public class UserServiceHibernate implements UserDAO {
     public void addUser(User user) {
         try {
             new UserHibernateDAO(sessionFactory.openSession()).addUser(user);
-        } catch(SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -46,11 +45,20 @@ public class UserServiceHibernate implements UserDAO {
         }
     }
 
-    public void updateUser(long id, String name, String email, long acc) {
+    public void updateUser(long id, String name, String email, String password, long acc, String role) {
         try {
-            new UserHibernateDAO(sessionFactory.openSession()).updateUser(id, name, email, acc);
+            new UserHibernateDAO(sessionFactory.openSession()).updateUser(id, name, email, password, acc, role);
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public User findUserByAuth(String email, String password) {
+        try {
+            return new UserHibernateDAO(sessionFactory.openSession()).findUserByAuth(email, password);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

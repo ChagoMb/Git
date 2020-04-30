@@ -49,12 +49,22 @@ public class UserServiceJdbc implements UserDAO {
         }
     }
 
-    public void updateUser(long id, String name, String email, long acc) {
+    public void updateUser(long id, String name, String email, String password, long acc, String role) {
         UserJdbcDAO dao = DBHelper.getConnection();
         try {
-            dao.updateUser(id, name, email, acc);
+            dao.updateUser(id, name, email, password, acc, role);
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public User findUserByAuth(String email, String password) {
+        UserJdbcDAO dao = DBHelper.getConnection();
+        try {
+            return dao.findUserByAuth(email, password);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }

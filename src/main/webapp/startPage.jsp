@@ -9,13 +9,22 @@
 <html>
 <head>
     <title>Start</title>
+    <style>
+        .center {
+            margin-left: 40%;
+            margin-top: 19%;
+        }
+    </style>
 </head>
 <body>
-To begin work with Project press on the button!
-<br>
-<form action="/users" method="get">
-    <input type="submit" value="Start!">
-</form>
-
+<div class="center">
+    Authentication:
+    <br>
+    <form action="/security">
+        <input required type="text" name="login" placeholder="Login">
+        <input required type="password" name="password" placeholder="Password">
+        <input type="submit" value="Sign">
+    </form>
+</div>
 </body>
 </html>

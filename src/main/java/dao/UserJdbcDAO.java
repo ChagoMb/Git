@@ -16,25 +16,22 @@ public class UserJdbcDAO implements UserDAO {
 
     public void createTable() throws SQLException {
         PreparedStatement pstmt = connection.prepareStatement("CREATE TABLE IF NOT EXISTS users " +
-                "(id BIGINT AUTO_INCREMENT, name VARCHAR(256), email VARCHAR(256), acc BIGINT, " +
-                "PRIMARY KEY (id), UNIQUE (email))");
-        pstmt.executeUpdate();
-        pstmt.close();
-    }
-
-    public void dropTable() throws SQLException {
-        PreparedStatement pstmt = connection.prepareStatement("DROP TABLE users");
-        pstmt.executeUpdate();
+                "(id BIGINT AUTO_INCREMENT, acc BIGINT, email VARCHAR(256), name VARCHAR(256), " +
+                "password VARCHAR(256), role VARCHAR(256), PRIMARY KEY (id), UNIQUE (email), UNIQUE (password))");
+        pstmt.execute();
         pstmt.close();
     }
 
     public void addUser(User user) throws SQLException {
         createTable();
         PreparedStatement pstmt = connection.prepareStatement("INSERT INTO users " +
-                "(name, email, acc) VALUES (?, ?, ?)");
-        pstmt.setString(1, user.getName());
+                "(acc, email, name, password, role) VALUES (?, ?, ?, ?, ?)");
+        pstmt.setLong(1, user.getAcc());
         pstmt.setString(2, user.getMail());
-        pstmt.setLong(3, user.getAcc());
+        pstmt.setString(3, user.getName());
+        pstmt.setString(4, user.getPassword());
+        pstmt.setString(5, user.getRole());
+
         pstmt.executeUpdate();
         pstmt.close();
     }
@@ -45,10 +42,12 @@ public class UserJdbcDAO implements UserDAO {
         ArrayList<User> users = new ArrayList<>();
         while (result.next()) {
             long id = result.getLong(1);
-            String name = result.getString(2);
+            String name = result.getString(4);
             String email = result.getString(3);
-            long acc = result.getLong(4);
-            users.add(new User(id, name, email, acc));
+            String password = result.getString(5);
+            long acc = result.getLong(2);
+            String role = result.getString(6);
+            users.add(new User(id, name, email, password, acc, role));
         }
         pstmt.close();
         return users;
@@ -62,14 +61,39 @@ public class UserJdbcDAO implements UserDAO {
         pstmt.close();
     }
 
-    public void updateUser(long id, String name, String email, long acc) throws SQLException {
-        PreparedStatement pstmt = connection.prepareStatement("UPDATE users SET name=?, email=?, acc=? " +
-                "WHERE id=?");
+    public void updateUser(long id, String name, String email, String password, long acc, String role) throws SQLException {
+        PreparedStatement pstmt = connection.prepareStatement("UPDATE users SET name=?, email=?, password=?, " +
+                "acc=?, role=? WHERE id=?");
         pstmt.setString(1, name);
         pstmt.setString(2, email);
-        pstmt.setLong(3, acc);
-        pstmt.setLong(4, id);
+        pstmt.setString(3, password);
+        pstmt.setLong(4, acc);
+        pstmt.setString(5, role);
+        pstmt.setLong(6, id);
         pstmt.executeUpdate();
         pstmt.close();
+    }
+
+    public User findUserByAuth(String email, String password) throws SQLException {
+        createTable();
+        PreparedStatement pstmt = connection.prepareStatement("SELECT * FROM users " +
+                "WHERE email=? AND password=?");
+        pstmt.setString(1, email);
+        pstmt.setString(2, password);
+        ResultSet result = pstmt.executeQuery();
+        User user;
+        if (!result.next()) {
+            return new User();
+        } else {
+            long id = result.getLong(1);
+            String name = result.getString(4);
+            String mail = result.getString(3);
+            String pass = result.getString(5);
+            long acc = result.getLong(2);
+            String role = result.getString(6);
+            user = new User(id, name, mail, pass, acc, role);
+        }
+        pstmt.close();
+        return user;
     }
 }

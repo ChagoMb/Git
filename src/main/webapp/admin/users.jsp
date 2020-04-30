@@ -36,7 +36,9 @@ List of users
         <th>Id</th>
         <th>Name</th>
         <th>e-mail</th>
+        <th>Password</th>
         <th>Acc</th>
+        <th>Role</th>
         <th>Edit</th>
         <th>Delete</th>
     </tr>
@@ -45,15 +47,17 @@ List of users
             <td>${user.getId()}</td>
             <td>${user.getName()}</td>
             <td>${user.getMail()}</td>
+            <td>${user.getPassword()}</td>
             <td>${user.getAcc()}</td>
+            <td>${user.getRole()}</td>
             <td>
-                <form action="updateUser.jsp" method="post">
+                <form action="/admin/updateUser.jsp" method="post">
                     <input type="hidden" name="id" value="${user.getId()}">
                     <input type="submit" value="Edit">
                 </form>
             </td>
             <td>
-                <form action="deleteUser.jsp" method="post">
+                <form action="/admin/deleteUser.jsp" method="post">
                     <input type="hidden" name="id" value="${user.getId()}">
                     <input type="submit" value="Delete">
                 </form>
@@ -62,8 +66,15 @@ List of users
     </c:forEach>
 </table>
 
-<form action="addUser.jsp">
+<form action="/admin/addUser.jsp">
     <input type="submit" value="Add new user">
+</form>
+<br>
+<form action="startPage.jsp">
+    <input type="submit" value="Log out">
+</form>
+<form action="/user">
+    <input type="submit" value="Show auth user">
 </form>
 </body>
 </html>
