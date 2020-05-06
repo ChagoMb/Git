@@ -73,8 +73,5 @@ List of users
 <form action="startPage.jsp">
     <input type="submit" value="Log out">
 </form>
-<form action="/user">
-    <input type="submit" value="Show auth user">
-</form>
 </body>
 </html>

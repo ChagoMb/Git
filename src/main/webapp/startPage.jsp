@@ -20,11 +20,17 @@
 <div class="center">
     Authentication:
     <br>
-    <form action="/security">
+    <form action="/security"    >
         <input required type="text" name="login" placeholder="Login">
         <input required type="password" name="password" placeholder="Password">
         <input type="submit" value="Sign">
     </form>
 </div>
+
+<%
+    HttpSession sess = request.getSession();
+    sess.invalidate();
+%>
+
 </body>
 </html>
